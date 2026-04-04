@@ -1,0 +1,317 @@
+-- FabinScripts Lite v3
+
+--========================================--
+--  Devs Abaixo
+--========================================--
+
+task.wait(1)
+
+print("========================================")
+print("🔥 FABINSCRIPTS LITE V3 CARREGADO")
+print("🚀 Melhor desempenho ativado")
+print("👨‍💻 Desenvolvedores:")
+print("👉 FabinScripts")
+print("👉 LineX")
+print("👉 Lala")
+print("========================================")
+
+pcall(function()
+	game:GetService("StarterGui"):SetCore("SendNotification", {
+		Title = "FabinScripts 🚀",
+		Text = "Script carregado com sucesso!",
+		Duration = 8
+	})
+end)
+
+task.wait(2)
+
+pcall(function()
+	game:GetService("StarterGui"):SetCore("SendNotification", {
+		Title = "Desenvolvedores 👨‍💻",
+		Text = "By FabinScripts, LineX & Lala",
+		Duration = 6
+	})
+end)
+
+print("FabinScripts lite v3 🔥")
+
+
+local player = game.Players.LocalPlayer
+local UIS = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local Lighting = game:GetService("Lighting")
+local Terrain = workspace:FindFirstChildOfClass("Terrain")
+
+-- NOCLIP
+local noclip = false
+
+RunService.Stepped:Connect(function()
+	if noclip and player.Character then
+		for _,v in pairs(player.Character:GetDescendants()) do
+			if v:IsA("BasePart") then
+				v.CanCollide = false
+			end
+		end
+	end
+end)
+
+-- GUI
+local gui = Instance.new("ScreenGui")
+gui.Name = "HubBase"
+gui.Parent = game.CoreGui
+gui.ResetOnSpawn = false
+
+-- LOGO BUTTON
+local logo = Instance.new("TextButton")
+logo.Parent = gui
+logo.Size = UDim2.new(0,50,0,50)
+logo.Position = UDim2.new(0,20,0.5,-25)
+logo.BackgroundColor3 = Color3.fromRGB(20,20,25)
+logo.Text = "FB"
+logo.TextColor3 = Color3.fromRGB(0,255,120)
+logo.Font = Enum.Font.GothamBold
+logo.TextSize = 18
+
+Instance.new("UICorner",logo).CornerRadius = UDim.new(1,0)
+
+local ls = Instance.new("UIStroke",logo)
+ls.Color = Color3.fromRGB(0,255,120)
+ls.Thickness = 1.5
+
+logo.Active = true
+logo.Draggable = true
+
+-- MAIN
+local main = Instance.new("Frame")
+main.Parent = gui
+main.Size = UDim2.new(0,400,0,260)
+main.Position = UDim2.new(0.5,-200,0.5,-130)
+main.BackgroundColor3 = Color3.fromRGB(15,15,20)
+main.BorderSizePixel = 0
+main.Visible = false
+main.Active = true
+main.Draggable = true
+
+Instance.new("UICorner",main).CornerRadius = UDim.new(0,12)
+
+local stroke = Instance.new("UIStroke",main)
+stroke.Color = Color3.fromRGB(0,255,120)
+stroke.Thickness = 1.5
+
+-- TITLE
+local title = Instance.new("TextLabel")
+title.Parent = main
+title.Text = "FB LITE V3"
+title.Size = UDim2.new(1,0,0,35)
+title.BackgroundTransparency = 1
+title.TextColor3 = Color3.fromRGB(0,255,120)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 20
+
+local ts = Instance.new("UIStroke",title)
+ts.Color = Color3.fromRGB(0,255,120)
+ts.Thickness = 1.5
+
+-- CATEGORY
+function createCategory(name,x,y)
+	local label = Instance.new("TextLabel")
+	label.Parent = main
+	label.Text = name
+	label.Position = UDim2.new(0,x,0,y)
+	label.Size = UDim2.new(0,200,0,18)
+	label.BackgroundTransparency = 1
+	label.TextColor3 = Color3.fromRGB(0,255,120)
+	label.Font = Enum.Font.GothamBold
+	label.TextSize = 13
+end
+
+-- ANTI LAG MAX / BOOST EXTREME MODIFICADO
+local function AntiLagMax()
+	task.spawn(function()
+		-- Desativar luzes e efeitos pesados
+		pcall(function()
+			Lighting.GlobalShadows = false
+			Lighting.Brightness = 0
+			Lighting.FogEnd = 9e9
+		end)
+
+		-- Remover efeitos visuais
+		for _,v in ipairs(Lighting:GetChildren()) do
+			if v:IsA("PostEffect") or v:IsA("Sky") or v:IsA("Atmosphere") then
+				v:Destroy()
+			end
+		end
+
+		for i,v in ipairs(workspace:GetDescendants()) do
+			pcall(function()
+				if v:IsA("ParticleEmitter") or v:IsA("Trail") or v:IsA("Smoke") or v:IsA("Fire") then
+					v:Destroy()
+				end
+				if v:IsA("Decal") or v:IsA("Texture") then
+					v:Destroy()
+				end
+				if v:IsA("BasePart") then
+					v.Material = Enum.Material.SmoothPlastic
+					v.CastShadow = false
+					v.Reflectance = 0
+				end
+				-- Desativar colisões de partes complexas
+				if v:IsA("UnionOperation") or v:IsA("WedgePart") then
+					v.CanCollide = false
+				end
+				-- Remover sons
+				if v:IsA("Sound") then
+					v:Destroy()
+				end
+
+				if i % 500 == 0 then
+					task.wait()
+				end
+			end)
+		end
+
+		-- Cabeças dos jogadores invisíveis e leves
+		for _, plr in ipairs(game.Players:GetPlayers()) do
+			if plr.Character then
+				local head = plr.Character:FindFirstChild("Head")
+				if head then
+					-- Remover SpecialMesh
+					for _,m in ipairs(head:GetChildren()) do
+						if m:IsA("SpecialMesh") then
+							m:Destroy()
+						end
+					end
+
+					-- Tornar cabeça invisível mas funcional
+					head.Transparency = 1
+					head.Material = Enum.Material.SmoothPlastic
+					head.MeshId = ""
+					head.TextureID = ""
+					head.Size = Vector3.new(2,1,1)
+				end
+			end
+		end
+
+		-- Desativar decoração do terreno
+		if Terrain then
+			Terrain.Decoration = false
+		end
+	end)
+end
+
+-- BUTTON
+local function createButton(text,x,y)
+	local button = Instance.new("TextButton")
+	button.Parent = main
+	button.Position = UDim2.new(0,x,0,y)
+	button.Size = UDim2.new(0,200,0,35)
+	button.BackgroundColor3 = Color3.fromRGB(25,25,30)
+	button.Text = ""
+
+	Instance.new("UICorner",button).CornerRadius = UDim.new(0,8)
+
+	local stroke = Instance.new("UIStroke",button)
+	stroke.Color = Color3.fromRGB(0,255,120)
+	stroke.Thickness = 1.5
+	stroke.Transparency = 0
+	stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+	local label = Instance.new("TextLabel")
+	label.Parent = button
+	label.Text = text
+	label.BackgroundTransparency = 1
+	label.Size = UDim2.new(1,-20,1,0)
+	label.Position = UDim2.new(0,10,0,0)
+	label.Font = Enum.Font.GothamBold
+	label.TextColor3 = Color3.fromRGB(0,255,120)
+	label.TextSize = 14
+	label.TextXAlignment = Enum.TextXAlignment.Left
+
+	button.MouseButton1Click:Connect(function()
+		if text == "ANTI LAG MAX" or text == "ANTI LAG LEVE" then
+			AntiLagMax()
+		elseif text == "SPEED PLAYER" then
+			if player.Character and player.Character:FindFirstChild("Humanoid") then
+				player.Character.Humanoid.WalkSpeed = 50
+			end
+		elseif text == "INFINITE JUMP" then
+			UIS.JumpRequest:Connect(function()
+				player.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+			end)
+		elseif text == "NOCLIP" then
+			noclip = not noclip
+		end
+	end)
+end
+
+-- CATEGORIES
+createCategory("ANTI LAG",20,40)
+createCategory("OUTROS",180,40)
+
+-- BOTÕES
+createButton("ANTI LAG MAX",20,60)
+createButton("ANTI LAG LEVE",20,100)
+createButton("SPEED PLAYER",180,60)
+createButton("INFINITE JUMP",180,100)
+createButton("NOCLIP",180,140)
+
+-- FOOTER
+local footer = Instance.new("Frame")
+footer.Parent = main
+footer.Size = UDim2.new(1,-30,0,50)
+footer.Position = UDim2.new(0,15,1,-60)
+footer.BackgroundColor3 = Color3.fromRGB(20,20,25)
+
+Instance.new("UICorner",footer).CornerRadius = UDim.new(0,10)
+
+local fs = Instance.new("UIStroke",footer)
+fs.Color = Color3.fromRGB(0,255,120)
+fs.Thickness = 1.5
+
+-- VERSION
+local version = Instance.new("TextLabel")
+version.Parent = footer
+version.BackgroundTransparency = 1
+version.Position = UDim2.new(0,15,0,15)
+version.Size = UDim2.new(0,120,0,20)
+version.TextColor3 = Color3.new(1,1,1)
+version.Font = Enum.Font.Gotham
+version.TextSize = 13
+version.Text = "Version: 3.0.0"
+
+-- PESSOAS
+local pessoas = Instance.new("TextLabel")
+pessoas.Parent = footer
+pessoas.BackgroundTransparency = 1
+pessoas.Position = UDim2.new(0,150,0,15)
+pessoas.Size = UDim2.new(0,200,0,20)
+pessoas.Font = Enum.Font.Gotham
+pessoas.TextSize = 13
+pessoas.TextColor3 = Color3.new(1,1,1)
+
+local function atualizarPessoas()
+	pessoas.Text = "Pessoas: "..#game.Players:GetPlayers()
+end
+
+task.spawn(function()
+	while true do
+		task.wait(1)
+		atualizarPessoas()
+	end
+end)
+
+-- HUB NAME
+local hub = Instance.new("TextLabel")
+hub.Parent = footer
+hub.BackgroundTransparency = 1
+hub.Position = UDim2.new(0.75,0,0,15)
+hub.Size = UDim2.new(0,120,0,20)
+hub.Text = "🇧🇷"
+hub.Font = Enum.Font.GothamBold
+hub.TextColor3 = Color3.fromRGB(0,255,120)
+hub.TextSize = 14
+
+-- ABRIR HUB
+logo.MouseButton1Click:Connect(function()
+	main.Visible = not main.Visible
+end)
